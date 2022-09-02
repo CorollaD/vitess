@@ -54,4 +54,14 @@ func TestAggregateTypes(t *testing.T) {
 	if got, want := fmt.Sprintf("%v", qr.Rows), `[[VARCHAR("c") INT64(2) INT64(2)] [VARCHAR("a") INT64(1) INT64(2)] [VARCHAR("b") INT64(1) INT64(1)] [VARCHAR("e") INT64(1) INT64(2)]]`; got != want {
 		t.Errorf("select:\n%v want\n%v", got, want)
 	}
+
+	qr = exec(t, conn, "select count(distinct val1) k from aggr_test where id = 1")
+	if got, want := fmt.Sprintf("%v", qr.Rows), `[[INT64(1)]]`; got != want {
+		t.Errorf("select:\n%v want\n%v", got, want)
+	}
+
+	qr = exec(t, conn, "select count(distinct val1) k from aggr_test")
+	if got, want := fmt.Sprintf("%v", qr.Rows), `[[INT64(4)]]`; got != want {
+		t.Errorf("select:\n%v want\n%v", got, want)
+	}
 }
